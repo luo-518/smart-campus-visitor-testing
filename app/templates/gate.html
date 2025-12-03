@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>门禁验证</title>
+</head>
+<body>
+    <h2>门禁扫描模拟</h2>
+
+    <form method="post">
+        输入访客码：<input name="code" required>
+        <button type="submit">验证</button>
+    </form>
+
+    {% if result %}
+    <h3>结果：{{ result }}</h3>
+    {% endif %}
+
+    <a href="/">回到预约</a>
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>预约审批</title>
+</head>
+<body>
+    <h2>预约审批列表</h2>
+
+    <table border="1">
+        <tr>
+            <th>访客姓名</th>
+            <th>访客码</th>
+            <th>时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+
+        {% for b in bookings %}
+        <tr>
+            <td>{{ b.visitor_name }}</td>
+            <td>{{ b.visitor_code }}</td>
+            <td>{{ b.start_time }} - {{ b.end_time }}</td>
+            <td>{{ b.status }}</td>
+            <td>
+                {% if b.status == "PENDING" %}
+                <form method="post" style="display:inline">
+                    <input type="hidden" name="code" value="{{ b.visitor_code }}">
+                    <button name="action" value="approve">通过</button>
+                    <button name="action" value="reject">拒绝</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/gate">进入门禁页面</a>
+</body>
+</html>
+

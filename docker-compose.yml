@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+
+  flask-app:
+    build: .
+    container_name: smart-campus-flask
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/app/app
+    restart: always
+
+  selenium-hub:
+    image: selenium/hub:4.16.1
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4444/status"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  selenium-chrome:
+    image: selenium/node-chrome:4.16.1
+    container_name: selenium-chrome
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555/status"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.tests
+    container_name: selenium-tests
+    environment:
+      - SELENIUM_REMOTE_URL=http://selenium-hub:4444/wd/hub
+      - FLASK_URL=http://smart-campus-flask:5000
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+      selenium-chrome:
+        condition: service_healthy
+    entrypoint: ["pytest", "-s"]
