@@ -24,23 +24,6 @@ Selenium Hub + Chrome Node
 Selenium Grid + Docker健康检查
 
 
-项目架构
-smart-campus-visitor-testing/
-├─ app/
-│  ├─ templates/        # 前端页面（访客预约 / 管理审批 / 门禁验证）
-│  ├─ storage.py        # 内存数据库（简化模型）
-│  └─ main.py           # Flask 业务逻辑：预约、审批、门禁验证
-│
-├─ automation/
-│  └─ test_e2e_booking.py   # Selenium + Pytest UI 自动化测试
-│
-├─ Dockerfile               # Flask 应用容器
-├─ Dockerfile.tests         # 自动化测试容器
-├─ docker-compose.yml       # 一键启动 Selenium Grid + Flask + 自动化测试
-├─ requirements.txt         # Flask 依赖
-├─ requirements.test.txt    # 自动化测试依赖
-└─ README.md                # 项目说明（本文）
-
 Q:如何一键运行整个测试环境
 A:克隆项目
 git clone https://github.com/你的用户名/smart-campus-visitor-testing.git
@@ -56,10 +39,10 @@ selenium-tests → 自动执行 UI 自动化测试
 
 查看自动化测试结果
 你会看到类似输出：
-selenium-tests | ============================== test session starts ===============================
+selenium-tests | test session starts
 selenium-tests | collected 1 item
 selenium-tests | test_e2e_booking.py PASSED
-selenium-tests | ============================== 1 passed in 0.80s ===============================
+selenium-tests | 1 passed in 0.80s 
 表示自动化测试成功执行。
 
 PS:
